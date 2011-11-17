@@ -7,7 +7,7 @@ module Pgmonitor::PS
 
   def log(level, *args)
     if level == :debug
-      $stderr.puts(*args) if Pgmonitor.debug?
+      $stderr.puts(*args) if ::Pgmonitor.debug?
     else
       if level == :error
         $stderr.puts(*args)
@@ -18,7 +18,7 @@ module Pgmonitor::PS
   end
 
   def processes(&blk)
-    EM.system("ps h -u postgres -o user,pid,ni,cp,rss,command") do |output, status|
+    ::EM.system("ps h -u postgres -o user,pid,ni,cp,rss,command") do |output, status|
       data = []
       output.split("\n").each do |line|
         d = line_to_data(line)
@@ -82,12 +82,12 @@ module Pgmonitor::PS
   end
 
   def queue
-    EM.add_timer(::Psmanager.delay) { PS.run }
+    EM.add_timer(::Pgmonitor.delay) { ::Pgmonitor::PS.run }
   end
 
   def run
     processes do |data|
-      PS.scrape(data) { renice { PS.queue } }
+      ::Pgmonitor::PS.scrape(data) { renice { ::Pgmonitor::PS.queue } }
     end
   end
 

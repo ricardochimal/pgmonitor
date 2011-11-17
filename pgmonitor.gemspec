@@ -13,5 +13,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   gem.name          = "pgmonitor"
   gem.require_paths = ["lib"]
+  gem.bindir        = "bin"
   gem.version       = Pgmonitor::VERSION
+
+  gem.add_dependency "eventmachine", ">= 0.12.4"
 end
