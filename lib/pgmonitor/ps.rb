@@ -60,7 +60,7 @@ module Pgmonitor::PS
     end
 
     databases.each do |db, d|
-      log(:notice, "usage db_name='#{db}' cpu=#{d['cpu']} mem=#{d['mem']} nice=#{d['nice']} zone=#{zone} elapsed=#{d['elapsed_time']} connections=#{d['connections']} #{::Pgmonitor.log_items}")
+      log(:notice, "usage db_name='#{db}' cpu=#{d['cpu']} mem=#{d['mem']} nice=#{d['nice']} elapsed=#{d['elapsed_time']} connections=#{d['connections']}#{::Pgmonitor.log_items}")
     end
 
     processes do |psdata|
