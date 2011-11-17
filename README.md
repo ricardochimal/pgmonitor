@@ -3,8 +3,14 @@ PG Monitor
 
 In a multitenant postgres user environment PG Monitor aims to normalize performance between users based on the resources (mainly cpu) that they're using.
 
+Caveats
+=======
+
+It only works in Linux because of the `ps` command arguments.
+
 License
 =======
+
 The MIT License (MIT)
 Copyright (c) 2011 Ricardo Chimal, Jr.
 
