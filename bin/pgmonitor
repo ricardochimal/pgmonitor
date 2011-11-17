@@ -6,6 +6,29 @@ $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 require 'optparse'
 require 'pgmonitor'
 
-EM.run {
+Pgmonitor.settings = {
+  :debug => false,
+  :delay => 2,
+  :log_items => nil
+}
+
+ARGV.options do |o|
+  o.set_summary_indent("  ")
+  o.banner = "Usage pgmonitor [OPTIONS]"
+  o.on("-d", "--debug", "Enable debug messages") do
+    ::Pgmonitor.settings[:debug] = true
+  end
+  o.on("-r", "--delay SECS", Integer, "Sampling interval, default is #{::Pgmonitor.delay}") do |d|
+    ::Pgmonitor.settings[:delay] = d.to_i
+  end
+  o.on("-l", "--logitems KEYVALPAIRS", Array, "key=val comma delimited pairs to append to log output") do |l|
+    ::Pgmonitor.settings[:log_items] = l
+  end
+
+  o.on("-h", "--help", "Show this help message") { $stderr.puts(o); exit }
+  o.parse!
+end
+
+::EM.run {
   ::Pgmonitor::PS.run
 }
